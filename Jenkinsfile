@@ -1,13 +1,12 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.9.6-eclipse-temurin-17'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
 
     stages {
-
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/harishmurali7418-prog/devops-demo'
-            }
-        }
 
         stage('Build with Maven') {
             steps {
@@ -29,7 +28,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 8090:8080 --name devops-container devops-demo'
+                sh 'docker run -d -p 8081:8080 --name devops-container devops-demo'
             }
         }
     }
